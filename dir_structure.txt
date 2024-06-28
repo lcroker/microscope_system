@@ -1,0 +1,31 @@
+microscope_system/
+│
+├── microscope_control/
+│   │   ├── __init__.py
+│   │   ├── controller.py
+│   │   └── microscope.py
+│   │
+│   ├── components/
+│   │   ├── __init__.py
+│   │   ├── stage.py
+│   │   ├── lamp.py
+│   │   └── camera/
+│   │         ├── __init__.py
+│   │         ├── base_camera.py
+│   │         ├── stage_camera.py
+│   │         └── spectral_camera.py
+│   │
+│   ├── autofocus/
+│   │   ├── __init__.py
+│   │   ├── base_autofocus.py
+│   │   ├── amplitude_autofocus.py
+│   │   ├── laser_autofocus.py
+│   │   ├── ramen_spectra_autofocus.py
+│   │   └── phase_autofocus.py
+│   │
+│   └── gui/
+│       ├── __init__.py
+│       └── main_window.py
+│
+├── requirements.txt
+└── setup.py
