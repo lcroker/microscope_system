@@ -1,31 +1,49 @@
 microscope_system/
 │
 ├── microscope_control/
-│   │   ├── __init__.py
-│   │   ├── controller.py
-│   │   └── microscope.py
-│   │
-│   ├── components/
-│   │   ├── __init__.py
-│   │   ├── stage.py
-│   │   ├── lamp.py
-│   │   └── camera/
-│   │         ├── __init__.py
-│   │         ├── base_camera.py
-│   │         ├── stage_camera.py
-│   │         └── spectral_camera.py
-│   │
-│   ├── autofocus/
-│   │   ├── __init__.py
-│   │   ├── base_autofocus.py
-│   │   ├── amplitude_autofocus.py
-│   │   ├── laser_autofocus.py
-│   │   ├── ramen_spectra_autofocus.py
-│   │   └── phase_autofocus.py
-│   │
-│   └── gui/
-│       ├── __init__.py
-│       └── main_window.py
+│   ├── __init__.py
+│   ├── controller.py
+│   ├── microscope.py
+│   └── strategy_registry.py  # New file for strategy registry
+│
+├── components/
+│   ├── __init__.py
+│   ├── stage.py
+│   ├── lamp.py
+│   └── camera/
+│         ├── __init__.py
+│         ├── base_camera.py
+│         ├── stage_camera.py
+│         └── spectral_camera.py
+│
+├── autofocus/
+│   ├── __init__.py
+│   ├── base_autofocus.py
+│   ├── amplitude_autofocus.py
+│   ├── laser_autofocus.py
+│   ├── raman_spectra_autofocus.py  # Corrected spelling
+│   └── phase_autofocus.py
+│
+├── cell_processing/  # New directory for cell processing strategies
+│   ├── __init__.py
+│   ├── base_cell_identifier.py
+│   ├── base_cell_selector.py
+│   ├── base_cell_processor.py
+│   ├── bright_spot_cell_identifier.py
+│   ├── isolated_cell_selector.py
+│   └── raman_cell_processor.py
+│
+├── gui/
+│   ├── __init__.py
+│   └── main_window.py
+│
+├── utils/  # New directory for utility functions
+│   ├── __init__.py
+│   └── image_processing.py
+│
+├── config/  # New directory for configuration files
+│   └── default_config.cfg
 │
 ├── requirements.txt
-└── setup.py
+├── setup.py
+└── main.py  # New file to run the application

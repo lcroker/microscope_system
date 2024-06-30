@@ -7,6 +7,7 @@ from microscope_system.components.lamp import Lamp
 from microscope_system.autofocus.base_autofocus import IAutofocus
 from microscope_system.microscope_control.controller import Controller, controller
 from microscope_system.microscope_control.exceptions import MicroscopeError, CameraError, StageError, LampError
+from microscope_system.microscope_control.strategy_registry import strategy_registry
 
 # Main class representing the microscope system.
 class Microscope:
@@ -19,12 +20,43 @@ class Microscope:
         self.camera: ICamera = StageCamera()
         self.stage: Stage = Stage()
         self.lamp: Lamp = Lamp()
-        self.autofocus_strategy: IAutofocus = None
+        self.strategy_registry = strategy_registry
+        self.autofocus = None
+        self.cell_identifier = None
+        self.cell_selector = None
+        self.cell_processor = None
 
-    # Perform autofocus using the specified strategy.
-    def auto_focus(self, autofocus_strategy: Type[IAutofocus], start: int, end: int, step: float = 1) -> float:
-        self.autofocus_strategy = autofocus_strategy(self.camera, self.stage, self.lamp)
-        return self.autofocus_strategy.focus(start, end, step)
+    def set_autofocus(self, strategy_name: str):
+        strategy_class = self.strategy_registry.get_autofocus(strategy_name)
+        if strategy_class:
+            self.autofocus = strategy_class(self.camera, self.stage, self.lamp)
+        else:
+            raise ValueError(f"Unknown autofocus strategy: {strategy_name}")
+
+    def set_cell_identifier(self, strategy_name: str):
+        strategy_class = self.strategy_registry.get_cell_identifier(strategy_name)
+        if strategy_class:
+            self.cell_identifier = strategy_class()
+        else:
+            raise ValueError(f"Unknown cell identifier strategy: {strategy_name}")
+
+    def set_cell_selector(self, strategy_name: str):
+        strategy_class = self.strategy_registry.get_cell_selector(strategy_name)
+        if strategy_class:
+            self.cell_selector = strategy_class()
+        else:
+            raise ValueError(f"Unknown cell selector strategy: {strategy_name}")
+
+    def set_cell_processor(self, strategy_name: str):
+        strategy_class = self.strategy_registry.get_cell_processor(strategy_name)
+        if strategy_class:
+            self.cell_processor = strategy_class()
+        else:
+            raise ValueError(f"Unknown cell processor strategy: {strategy_name}")
+
+    def run_analysis(self):
+        if not all([self.autofocus, self.cell_identifier, self.cell_selector, self.cell_processor]):
+            raise ValueError("All strategies must be set before running analysis")
 
     # Capture an image using the current camera.
     def capture_image(self) -> np.ndarray:
